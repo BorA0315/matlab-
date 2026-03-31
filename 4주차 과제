@@ -1,0 +1,36 @@
+1번
+f1 = @(x) 0.3 * x - sin(2*x);
+x_root = fzero(f1, 1)
+[x_min, f1_val] = fminbnd(f1, 0, 4)
+
+fplot(f1, [0, 4], 'LineWidth', 1)
+hold on;
+grid on;
+plot(x_min, f1_val, 'r*', 'MarkerSize', 10, 'LineWidth', 2);
+title('전역 최솟값 증명');
+hold off;
+2번
+t2 = ksh_25011722_func_2(100, 50, 9.81)
+3번
+global V
+V = 10;
+r3 = fminbnd(@(r) ksh_25011722_func_3b(r), 0.1, 10)
+4번
+f4 = @(x) 10 * exp(-2 * x);
+fplot(f4, [0, 2])
+grid on
+5번
+f5 = @(x) 30 * x.^2 - 300 * x + 4;
+
+fplot(f5, [0, 10])
+grid on
+
+x_min5 = fminbnd(f5, 0, 10)
+6번
+h6 = @(z) 6*exp(z);
+g6 = @(y) 3*cos(y);
+f6 = @(x) x.^2;
+f_total = @(x) h6(g6(f6(x)));
+
+fplot(f_total, [0, 4])
+grid on
