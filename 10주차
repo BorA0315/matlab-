@@ -1,0 +1,306 @@
+1번
+clear; clc;
+
+%a
+t = 0:0.01:30;
+f = exp(-0.12*t).* sin(5*t) + 0.3 * cos(2*t);
+figure;
+plot(t, f);
+xlabel('t'); ylabel('f(t)');
+hold on;
+
+%b
+u = exp(-0.12*t) + 0.3;
+l = -exp(-0.12*t) - 0.3;
+plot(t, u, t, l);
+
+%c
+idx = find(f(2:end-1) > f(1:end-2) & f(2:end-1) > f(3:end)) + 1;
+
+%d
+plot(t(idx), f(idx), 'ro');
+hold off;
+
+%e
+Local_Max_Table = [t(idx)' f(idx)']
+2번
+clear; clc;
+
+x = -5:0.05:5;
+y = -5:0.05:5;
+[X, Y] = meshgrid(x, y);
+
+%a
+Z = sin(X.*Y) ./ (1 + X.^2 + Y.^2);
+
+%b
+figure;
+mesh(X, Y, Z);
+xlabel('x'); ylabel('y'); zlabel('z');
+
+%c
+figure;
+contour(X, Y, Z, 25);
+xlabel('x'); ylabel('y');
+
+%d
+max_abs_Z = max(max(abs(Z)))
+
+%e
+[max_val, linear_idx] = max(Z(:));
+[row, col] = ind2sub(size(Z), linear_idx);
+max_x = X(row, col)
+max_y = Y(row, col)
+3번
+clear; clc;
+
+A = [7 2 1; 2 6 -2; 1 -2 5];
+
+%a
+[V, D] = eig(A)
+
+%b
+eigenvalues = diag(D)
+
+%c
+[lambda_max, idx] = max(eigenvalues)
+
+%d
+v = V(:, idx)
+
+%e
+v_unit = v / norm(v)
+
+%f
+check_zero = A * v_unit - lambda_max * v_unit
+4번
+clear; clc;
+
+X = [2 5 1; 4 8 11; 6 11 10; 9 15 10; 13 20 14];
+
+%a
+m = mean(X)
+
+%b
+Xc = X - m
+
+%c
+S = Xc' * Xc
+
+%d
+[V, D] = eig(S);
+eigenvalues_S = diag(D)
+
+%e
+[max_eig_S, max_idx] = max(eigenvalues_S)
+
+%f
+max_eig_vector = V(:, max_idx)
+5번
+clear; clc;
+
+%a
+A = [5 2 -1; -2 6 3; 1 -1 7];
+b = [8; 5; 12];
+
+%b
+x1 = inv(A) * b
+
+%c
+x2 = A \ b
+
+%d
+diff_x = x1 - x2
+
+%e
+det_A = det(A)
+if det_A ~= 0
+    disp('해가 유일하게 존재한다');
+end
+6번
+clear; clc;
+
+x = -6:0.05:6;
+y = -6:0.05:6;
+[X, Y] = meshgrid(x, y);
+
+%a
+Z = exp(-0.08*(X.^2 + Y.^2)) .* cos(3*X) .* sin(2*Y);
+
+%b
+figure;
+surf(X, Y, Z);
+
+%c
+figure;
+contour(X, Y, Z, 30);
+
+%d
+max_Z = max(Z(:))
+min_Z = min(Z(:))
+
+%e
+[max_idx] = find(Z == max_Z);
+[r_max, c_max] = ind2sub(size(Z), max_idx);
+max_coord = [X(r_max, c_max), Y(r_max, c_max)]
+
+[min_idx] = find(Z == min_Z);
+[r_min, c_min] = ind2sub(size(Z), min_idx);
+min_coord = [X(r_min, c_min), Y(r_min, c_min)]
+7번
+clear; clc;
+
+n = [50, 100, 200, 400, 800, 1600];
+T = [14, 19, 30, 51, 92, 170];
+figure;
+
+%a
+subplot(1,3,1);
+plot(n, T, 'o-');
+title('a');
+
+%b
+subplot(1,3,2);
+semilogx(n, T, 'o-');
+title('b');
+
+%c
+subplot(1,3,3);
+semilogy(n, T, 'o-');
+title('c');
+
+%e
+disp('가장 직선에 가깝게 보이는 그래프 : plot');
+8번
+clear; clc;
+
+%a
+t = 0:0.01:24;
+P = 50 + 18*sin(pi*t/12) + 6*cos(pi*t/4);
+figure;
+plot(t, P);
+xlabel('t'); ylabel('P(t)');
+hold on;
+
+%b
+[max_P, max_idx] = max(P)
+
+%c
+max_t = t(max_idx)
+
+%d
+[min_P, min_idx] = min(P)
+min_t = t(min_idx)
+
+%e
+plot(max_t, max_P, 'ro', 'MarkerSize', 8, 'LineWidth', 2);
+plot(min_t, min_P, 'bs', 'MarkerSize', 8, 'LineWidth', 2);
+legend('P(t)', 'Max Power', 'Min Power');
+hold off;
+9번
+clear; clc;
+
+X = [1 3 0; 2 5 1; 4 8 3; 7 12 5; 11 17 9];
+
+%a
+x1 = X(:,1);
+x2 = X(:,2);
+x3 = X(:,3);
+
+%b
+theta12 = acosd(dot(x1, x2) / (norm(x1) * norm(x2)))
+
+%c
+theta13 = acosd(dot(x1, x3) / (norm(x1) * norm(x3)))
+theta23 = acosd(dot(x2, x3) / (norm(x2) * norm(x3)))
+
+%d
+theta = [theta12, theta13, theta23]
+
+%e
+[min_theta, idx] = min(theta);
+fprintf('가장 작은 각도 : %f', min_theta);
+if idx == 1
+    disp('1번, 2번');
+elseif idx == 2
+    disp('1번, 3번');
+else
+    disp('2번, 3번');
+end
+10번
+clear; clc;
+
+%a
+A = [9 -2 -1; -2 8 -3; -1 -3 10];
+b = [15; 7; 11];
+
+%b
+I = A \ b
+
+%c
+det_A = det(A)
+if det_A ~= 0
+    disp('가역행렬입니다');
+end
+
+%d
+abs_I = abs(I)
+
+%e
+[max_I, I_idx] = max(abs_I);
+fprintf('절댓값이 가장 큰 전류 : %f, 전류의 번호 : %d', max_I, I_idx);
+11번
+clear; clc;
+
+t = 0:0.01:40;
+
+%a
+y = exp(-0.04*t) .* (sin(4*t) + 0.6*sin(9*t));
+figure;
+plot(t, y);
+xlabel('t (sec)'); ylabel('y(t)');
+hold on;
+
+%b
+u = 1.6 * exp(-0.04*t);
+l = -1.6 * exp(-0.04*t);
+
+%c
+plot(t, u, 'r--', t, l, 'r--');
+hold off;
+
+%d
+figure;
+semilogy(t, abs(y));
+xlabel('t (sec)'); ylabel('|y(t)|');
+
+%e
+u_at_0 = u(find(t == 0))
+u_at_40 = u(find(t == 40))
+12번
+clear; clc;
+
+epoch = [1, 2, 5, 10, 20, 50, 100, 200];
+loss = [3.1, 2.4, 1.7, 1.2, 0.83, 0.36, 0.14, 0.06];
+
+%a
+figure;
+plot(epoch, loss, 'o-');
+xlabel('Epoch'); ylabel('Loss');
+
+%b
+figure;
+semilogy(epoch, loss, 'o-');
+xlabel('Epoch'); ylabel('Loss');
+
+%c
+r = loss(2:end) ./ loss(1:end-1)
+
+%d
+mean_r = mean(r)
+
+%e
+if mean_r < 1
+    disp('비율 벡터의 평균이 1보다 작으므로, loss가 전반적으로 감소한다고 판단');
+end
+
